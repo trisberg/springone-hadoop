@@ -22,7 +22,7 @@ Copy the following files from this repo:
 ```
   to:
 ```
-    $HADOOP_INSTALL/etc/hadoop
+  $HADOOP_INSTALL/etc/hadoop
 ```
 
 This is a barebones configuration that stores any data files in your
