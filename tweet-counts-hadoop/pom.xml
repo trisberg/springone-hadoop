@@ -12,7 +12,7 @@
 	<description>Simple map-reduce program</description>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<hadoop.version>2.0.5-alpha</hadoop.version>
+		<hadoop.version>2.0.6-alpha</hadoop.version>
 	</properties>
 	<dependencies>
 		<dependency>
