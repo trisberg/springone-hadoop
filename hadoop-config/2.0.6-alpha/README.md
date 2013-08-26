@@ -1,6 +1,9 @@
 Hadoop Configuration
 ====================
 
+Single-node pseudo-distributed cluster
+--------------------------------------
+
 Modify $HADOOP_INSTALL/etc/hadoop/hadoop-env.sh
 
 modify line 27: `export JAVA_HOME=${JAVA_HOME}`
