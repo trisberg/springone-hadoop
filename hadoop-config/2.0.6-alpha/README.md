@@ -16,7 +16,7 @@ On Ubuntu 13.04 with Java 1.6 it would be:
 
     export JAVA_HOME="/usr/lib/jvm/java-6-openjdk-amd64"
 
-Copy the following files from the `springone-hadoop/hadoop-config/2.0.6-alpha/etc/hadoop` 
+Copy the following files from the `hadoop-config/2.0.6-alpha/etc/hadoop` 
 directory of this repo:
 ```
   core-site.xml
