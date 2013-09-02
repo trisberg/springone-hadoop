@@ -5,23 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.springdeveloper.hadoop</groupId>
 	<artifactId>tweet-counts-spring</artifactId>
-	<version>0.0.1.BUILD-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
-	<name>Tweet Counts</name>
-	<url>http://www.springdeveloper.com</url>
+	<name>Spring Tweet Counts</name>
 	<description>Simple Spring driven map-reduce program</description>
 
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<spring.framework.version>3.2.4.RELEASE</spring.framework.version>
-		<spring.hadoop.version>1.0.1.RC1-hadoop20</spring.hadoop.version>
-		<hadoop.version>2.0.6-alpha</hadoop.version>
+		<spring.hadoop.version>1.0.1.RELEASE</spring.hadoop.version>
+		<hadoop.version>1.2.1</hadoop.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.springdeveloper.hadoop</groupId>
 			<artifactId>tweet-counts-hadoop</artifactId>
-			<version>0.0.1.BUILD-SNAPSHOT</version>
+			<version>0.1.0</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -33,11 +32,6 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-hadoop</artifactId>
 			<version>${spring.hadoop.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-mapreduce-client-jobclient</artifactId>
-			<version>${hadoop.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>

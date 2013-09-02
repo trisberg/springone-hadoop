@@ -10,15 +10,14 @@
 	<context:property-placeholder location="hadoop.properties"/>
 
 	<configuration>
-		fs.defaultFS=${hd.fs}
-		yarn.resourcemanager.address=${hd.rm}
-		mapreduce.framework.name=${mr.fw}
+		fs.default.name=${hd.fs}
+		mapred.job.tracker=${hd.jt}
 	</configuration>
 
 	<job id="tweetCountJob"
 		input-path="${tweetcount.input.path}" 
 		output-path="${tweetcount.output.path}"
-		libs="file:${app.repo}/tweet-counts-hadoop-0.0.1.BUILD-SNAPSHOT.jar"
+		libs="file:${app.repo}/tweet-counts-hadoop-0.1.0.jar"
 		mapper="com.springdeveloper.hadoop.TweetCountMapper"
 		reducer="com.springdeveloper.hadoop.IntSumReducer"/>
 

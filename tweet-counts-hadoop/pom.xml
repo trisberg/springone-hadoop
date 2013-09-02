@@ -5,24 +5,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.springdeveloper.hadoop</groupId>
 	<artifactId>tweet-counts-hadoop</artifactId>
-	<version>0.0.1.BUILD-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 	<name>Tweet Counts</name>
 	<url>http://www.springdeveloper.com</url>
 	<description>Simple map-reduce program</description>
 	<properties>
-		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<hadoop.version>2.0.6-alpha</hadoop.version>
+		<hadoop.version>1.2.1</hadoop.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-common</artifactId>
-			<version>${hadoop.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-mapreduce-client-jobclient</artifactId>
+			<artifactId>hadoop-core</artifactId>
 			<version>${hadoop.version}</version>
 		</dependency>
 		<dependency>
