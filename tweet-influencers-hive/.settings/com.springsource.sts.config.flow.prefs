@@ -1,0 +1,3 @@
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/tweet-influencers-hive/src/main/resources/META-INF/spring/hive-context.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<graph/>
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/tweet-influencers-hive/src/main/resources/META-INF/spring/jdbc-context.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<graph/>
+eclipse.preferences.version=1

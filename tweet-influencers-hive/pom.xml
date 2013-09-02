@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.springdeveloper.hadoop</groupId>
+	<artifactId>tweet-influencers-hive</artifactId>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
+	<name>Tweet Influencers Hive</name>
+	<description>Simple Spring driven Pig script</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.framework.version>3.2.4.RELEASE</spring.framework.version>
+		<spring.hadoop.version>1.0.1.RELEASE</spring.hadoop.version>
+		<hive.version>0.11.0</hive.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-hadoop</artifactId>
+			<version>${spring.hadoop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.framework.version}</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<!-- runtime Hive deps start -->
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-service</artifactId>
+			<version>${hive.version}</version>
+			<scope>runtime</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.jdo</groupId>
+					<artifactId>jdo2-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.jdo</groupId>
+			<artifactId>jdo2-api</artifactId>
+			<version>2.3-eb</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-jdbc</artifactId>
+			<version>${hive.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- runtime Hive deps end -->
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<repositoryLayout>flat</repositoryLayout>
+					<configurationSourceDirectory>src/main/config</configurationSourceDirectory>
+					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+					<!-- Extra JVM arguments that will be included in the bin scripts -->
+					<extraJvmArguments>-Xms512m -Xmx1024m</extraJvmArguments>
+					<programs>
+						<program>
+							<mainClass>com.springdeveloper.hadoop.hive.HiveApp</mainClass>
+							<name>hiveApp</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>package</id>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
