@@ -39,6 +39,6 @@ public class HiveApp {
 		
 		template.executeScript(script);
 		
-		log.warn("Please press [Ctrl-C] to terminate local hive server");
+		context.close();
 	}
 }

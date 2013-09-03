@@ -44,6 +44,7 @@ public class HiveJdbcApp {
 		template.execute(tableDdl);
 
 		template.execute(results + " " + query);
-
+		
+		context.close();
 	}
 }
