@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:hdp="http://www.springframework.org/schema/hadoop"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:hadoop.properties,classpath:hive-jdbc.properties"/>
+	
+	<import resource="batch-common-context.xml"/>
+	<import resource="export-context.xml"/>
+	 
+	<!-- required to access #{jobParameters['...']} -->
+	<bean class="org.springframework.batch.core.scope.StepScope">
+		<property name="proxyTargetClass" value="true"/>
+	</bean>
+
+	<hdp:configuration>
+		fs.default.name=${hd.fs}
+		mapred.job.tracker=${hd.jt}
+	</hdp:configuration>
+
+	<batch:job id="tweetAnalysisJob">
+ 
+ 		<batch:step id="import" next="parallel">
+			<batch:tasklet ref="scriptTasklet"/>
+		</batch:step>
+		
+		<batch:split id="parallel" task-executor="taskExecutor" next="export">
+			<batch:flow>
+				<batch:step id="hashtags" next="top10">
+					<batch:tasklet ref="hashtag-tasklet" />
+				</batch:step>
+				<batch:step id="top10">
+					<batch:tasklet ref="top10-tasklet" />
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="influencers">
+					<batch:tasklet ref="influencers-tasklet" />
+				</batch:step>
+			</batch:flow>
+		</batch:split>	
+
+		<batch:step id="export">
+			<batch:tasklet>
+				<batch:chunk reader="hdfsReader" writer="jdbcWriter" commit-interval="10" skip-limit="100">
+					<batch:listeners>
+						<batch:listener ref="jdbcListener"/>
+					</batch:listeners>
+					<batch:skippable-exception-classes>
+						<batch:include class="org.springframework.batch.item.file.FlatFileParseException" />
+					</batch:skippable-exception-classes>
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+
+	</batch:job>
+
+	<bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+	
+	<bean id="jdbcListener" class="com.springdeveloper.batch.item.MyJdbcListener"/>
+
+	<hdp:script-tasklet id="scriptTasklet" scope="step">
+		<hdp:script location="classpath:file-prep.groovy">
+			<hdp:property name="localSourceFile" value="${app.home}/#{jobParameters['localData']}"/>
+			<hdp:property name="inputDir" value="#{jobParameters['mr.input']}"/>
+			<hdp:property name="outputDir" value="#{jobParameters['mr.output']}"/>
+		</hdp:script>	
+	</hdp:script-tasklet>
+
+	<hdp:job-tasklet id="hashtag-tasklet" job-ref="hashtagJob"/>
+	
+	<hdp:job id="hashtagJob"
+		input-path="#{jobParameters['mr.input']}" 
+		output-path="#{jobParameters['mr.output']}/results"  
+		libs="file:${app.repo}/tweet-counts-hadoop-0.1.0.jar"
+		mapper="com.springdeveloper.hadoop.TweetCountMapper"
+		reducer="com.springdeveloper.hadoop.IntSumReducer"
+		scope="step"/>
+
+	<hdp:pig-tasklet id="top10-tasklet" scope="step">
+		<hdp:script location="classpath:tweet-analysis.pig">
+			<hdp:arguments>
+				inputDir=#{jobParameters['mr.output']}/results
+				outputDir=#{jobParameters['mr.output']}/pigout		
+			</hdp:arguments>
+		</hdp:script>					
+	</hdp:pig-tasklet>
+
+	<hdp:pig-factory exec-type="MAPREDUCE" properties-location="classpath:pig-server.properties"/>
+
+	<bean id="influencers-tasklet" class="com.springdeveloper.hadoop.hive.HiveJdbcTasklet" scope="step">
+	  <property name="jdbcTemplate" ref="hiveJdbcTemplate"/>
+	  <property name="outputPath" value="#{jobParameters['mr.output']}"/>
+	</bean>
+
+	<bean id="hiveDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	  <property name="driverClass" value="org.apache.hive.jdbc.HiveDriver"/>
+	  <property name="url" value="${hive.url}"/>
+	  <property name="username" value="${hive.user}"/>
+	</bean>
+
+	<bean id="hiveJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	  <constructor-arg ref="hiveDataSource"/>
+	</bean>
+
+</beans>
+

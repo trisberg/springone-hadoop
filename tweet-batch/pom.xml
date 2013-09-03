@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.springdeveloper.hadoop</groupId>
+	<artifactId>tweet-batch</artifactId>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
+	<name>Tweet Batch</name>
+	<description>Spring driven Hadoop Batch workflow</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.framework.version>3.2.4.RELEASE</spring.framework.version>
+		<spring.hadoop.version>1.0.1.RELEASE</spring.hadoop.version>
+		<spring.batch.version>2.2.1.RELEASE</spring.batch.version>
+		<pig.version>0.11.1</pig.version>
+		<hive.version>0.11.0</hive.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.springdeveloper.hadoop</groupId>
+			<artifactId>tweet-counts-hadoop</artifactId>
+			<version>0.1.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-hadoop</artifactId>
+			<version>${spring.hadoop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.framework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-core</artifactId>
+			<version>${spring.batch.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.pig</groupId>
+			<artifactId>pig</artifactId>
+			<version>${pig.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Pig runtime dependencies start -->
+		<dependency>
+			<groupId>jline</groupId>
+			<artifactId>jline</artifactId>
+			<version>0.9.94</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r06</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>3.1</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
+			<scope>runtime</scope>
+		</dependency>
+
+ 		<dependency>
+			<groupId>dk.brics.automaton</groupId>
+			<artifactId>automaton</artifactId>
+			<version>1.11-8</version>
+		</dependency>
+ 		<!-- Pig runtime dependencies end -->
+
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-jdbc</artifactId>
+			<version>${hive.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>1.8.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>spring-milestone</id>
+			<url>http://repo.springsource.org/libs-milestone</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<repositoryLayout>flat</repositoryLayout>
+					<configurationSourceDirectory>src/main/config</configurationSourceDirectory>
+					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+					<!-- Extra JVM arguments that will be included in the bin scripts -->
+					<extraJvmArguments>-Xms512m -Xmx1024m</extraJvmArguments>
+					<programs>
+						<program>
+							<mainClass>com.springdeveloper.hadoop.batch.BatchApp</mainClass>
+							<name>batchApp</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>package</id>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>config</id>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="target/appassembler/data">
+									<fileset dir="../data"/>
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
