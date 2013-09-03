@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans:beans xmlns="http://www.springframework.org/schema/hadoop"
+	xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:hdp="http://www.springframework.org/schema/hadoop"
-	xmlns:batch="http://www.springframework.org/schema/batch"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-	  http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd
-	  http://www.springframework.org/schema/batch	http://www.springframework.org/schema/batch/spring-batch.xsd">
+	  http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
 
-	<context:property-placeholder location="hive.properties"/>
+	<context:property-placeholder location="hadoop.properties,hive.properties"/>
+	 
+	<configuration>
+		fs.default.name=${hd.fs}
+		mapred.job.tracker=${hd.jt}
+	</configuration>
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-	  <property name="driverClass" value="org.apache.hive.jdbc.HiveDriver"/>
-	  <property name="url" value="${hive.url}"/>
-	  <property name="username" value="${hive.user}"/>
-	</bean>
+	<hive-server port="${hive.port}" auto-startup="true"
+	             properties-location="hive-server.properties"/>		     
+	
+	<hive-client-factory host="${hive.host}" port="${hive.port}"/>	
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-	  <constructor-arg ref="dataSource"/>
-	</bean>
-
-</beans>
+	<hive-template id="hiveTemplate"/>		
+	
+</beans:beans>

@@ -35,7 +35,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.framework.version}</version>
-
 		</dependency>
 
 		<dependency>
@@ -44,23 +43,18 @@
 			<version>${spring.framework.version}</version>
 		</dependency>
 
-		<!-- runtime Hive deps start -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>1.8.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.hive</groupId>
 			<artifactId>hive-service</artifactId>
 			<version>${hive.version}</version>
 			<scope>runtime</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.jdo</groupId>
-					<artifactId>jdo2-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>javax.jdo</groupId>
-			<artifactId>jdo2-api</artifactId>
-			<version>2.3-eb</version>
 		</dependency>
 
 		<dependency>
@@ -69,7 +63,6 @@
 			<version>${hive.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- runtime Hive deps end -->
 
 		<dependency>
 			<groupId>log4j</groupId>
@@ -77,6 +70,13 @@
 			<version>1.2.14</version>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>spring-milestone</id>
+			<url>http://repo.springsource.org/libs-milestone</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
@@ -94,6 +94,10 @@
 						<program>
 							<mainClass>com.springdeveloper.hadoop.hive.HiveApp</mainClass>
 							<name>hiveApp</name>
+						</program>
+						<program>
+							<mainClass>com.springdeveloper.hadoop.hive.HiveJdbcApp</mainClass>
+							<name>hiveJdbcApp</name>
 						</program>
 					</programs>
 				</configuration>

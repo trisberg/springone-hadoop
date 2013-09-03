@@ -19,26 +19,31 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.hadoop.hive.HiveScript;
-import org.springframework.data.hadoop.hive.HiveTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-public class HiveApp {
+public class HiveJdbcApp {
 
-	private static final Log log = LogFactory.getLog(HiveApp.class);
+	private static final Log log = LogFactory.getLog(HiveJdbcApp.class);
 
 	public static void main(String[] args) throws Exception {
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
-				"/META-INF/spring/hive-context.xml", HiveApp.class);
-		log.info("Hive Application Running");
+				"/META-INF/spring/hive-jdbc-context.xml", HiveJdbcApp.class);
+		log.info("Hive JDBC Application Running");
 		context.registerShutdownHook();
+		
+		String tableDdl = "create external table if not exists tweetdata (value STRING) LOCATION '/tweets/input'";
+		String query = "select r.retweetedUser, '\t', count(r.retweetedUser) as count " +
+					" from tweetdata j " +
+					" lateral view json_tuple(j.value, 'retweet', 'retweetedStatus') t as retweet, retweetedStatus " + 
+					" lateral view json_tuple(t.retweetedStatus, 'fromUser') r as retweetedUser " +
+					" where t.retweet = 'true' " +
+					" group by r.retweetedUser order by count desc limit 10";
+		String results = "insert overwrite directory '/tweets/hiveout'";
+		
+		JdbcTemplate template = context.getBean(JdbcTemplate.class);
+		template.execute(tableDdl);
 
-		HiveTemplate template = context.getBean(HiveTemplate.class);
-		
-		HiveScript script = new HiveScript(new ClassPathResource("tweet-influencers.hql"));
-		
-		template.executeScript(script);
-		
-		log.warn("Please press [Ctrl-C] to terminate local hive server");
+		template.execute(results + " " + query);
+
 	}
 }
