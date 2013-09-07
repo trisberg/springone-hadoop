@@ -9,7 +9,7 @@ If that's not the case do the following:
 ````
 cd ~/springone-hadoop/tweet-counts-hadoop
 mvn clean install
-cd ~/springone-hadoop/tweet-counts-spring
+cd ~/springone-hadoop/tweet-batch
 ````
 
 Build and run using
