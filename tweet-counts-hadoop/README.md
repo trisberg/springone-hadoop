@@ -15,4 +15,4 @@ export HADOOP_CLASSPATH=~/springone-hadoop/tweet-counts-hadoop/target/tweet- cou
 hadoop com.springdeveloper.hadoop.TweetHashTagCounter ~/springone- hadoop/data/nbatweets-small.txt ~/springone-hadoop/output
 ````
 
-Adjust JAVA_HOME and your path to the project as needed.
+_Adjust JAVA_HOME and your path to the project as needed._
