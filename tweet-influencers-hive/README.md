@@ -14,4 +14,4 @@ sh ./target/appassembler/bin/hiveApp
 sh ./target/appassembler/bin/hiveJdbcApp
 ````
 
-Adjust JAVA_HOME and your path to the project as needed.
+_Adjust JAVA_HOME and your path to the project as needed.__

@@ -24,4 +24,4 @@ mvn clean package
 sh ./target/appassembler/bin/pigApp
 ````
 
-Adjust JAVA_HOME and your path to the project as needed.
+_Adjust JAVA_HOME and your path to the project as needed.__
