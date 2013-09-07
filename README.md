@@ -26,13 +26,13 @@ You should see something like the following:
 
 Now go to this page for further instructions:
 
-[tweet-counts-hadoop](tweet-counts-hadoop)
+* [tweet-counts-hadoop](tweet-counts-hadoop)
 
 The other examples are built using the [Spring for Apache Hadoop](https://github.com/SpringSource/spring-hadoop) support and rely on having a Hadoop 
 cluster available on the following addresses:
 
-HDFS:		hdfs://sandbox:8020
-JobTracker:	sandbox:50300
+* HDFS:		hdfs://sandbox:8020
+* JobTracker:	sandbox:50300
 
 You can use the [Hortonworks Sandbox](http://hortonworks.com/sandbox/) for this. I added the following entry to my /etc/hosts file:
 
@@ -44,8 +44,8 @@ Adjust as needed for your installation specifics.
 
 See the following Spring for Apache Hadoop examples for more instructions:
 
-[tweet-counts-spring](tweet-counts-spring)
-[tweet-top10-pig](tweet-top10-pig)
-[tweet-influencers-hive](tweet-counts-hadoop)
-[tweet-batch](tweet-batch)
+* [tweet-counts-spring](tweet-counts-spring)
+* [tweet-top10-pig](tweet-top10-pig)
+* [tweet-influencers-hive](tweet-counts-hadoop)
+* [tweet-batch](tweet-batch)
 
