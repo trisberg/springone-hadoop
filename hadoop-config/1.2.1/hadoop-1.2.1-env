@@ -1,0 +1,10 @@
+export HADOOP_INSTALL="~/Hadoop/hadoop-1.2.1"
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64
+
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+
+export HADOOP_CONF_DIR=$HADOOP_INSTALL/conf
+
+export PATH=$HADOOP_INSTALL/bin:$HADOOP_INSTALL/sbin:$PATH
+

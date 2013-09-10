@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+    <property>
+      <name>dfs.replication</name>
+      <value>1</value>
+    </property>
+    <property>
+      <name>dfs.support.broken.append</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>dfs.webhdfs.enabled</name>
+      <value>true</value>
+    </property>
+    <!--
+    <property>
+        <name>dfs.name.dir</name>
+        <value>**PUT YOUR PATH HERE**</value>
+        <description>Determines where on the local filesystem the DFS name node should store the name table(fsimage)</description>
+    </property>
+    <property>
+        <name>dfs.data.dir</name>
+        <value>**PUT YOUR PATH HERE**</value>
+        <description>Determines where on the local filesystem an DFS data node should store its blocks</description>
+    </property>
+    -->
+</configuration>
